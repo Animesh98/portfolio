@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Career Prep Platform — Animesh Sinha</title>
+<meta name="description" content="Full-stack career intelligence platform — resume parsing, LinkedIn scraping, GitHub analysis, AI match scoring." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='32' fill='%237dd3c0'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;450;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a class="brand" href="../index.html"><span class="brand-dot"></span>Animesh</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a class="nav-cta" href="../assets/animesh-sinha-resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="project-page">
+  <div class="container">
+    <a class="back-link" href="../index.html#projects">← All projects</a>
+
+    <header class="project-header">
+      <div class="project-meta">
+        <span>Personal · Full-stack</span>
+        <span>2026</span>
+      </div>
+      <h1>Career Prep Platform</h1>
+      <p class="lede">A career intelligence platform: resume parsing, LinkedIn and GitHub analysis, LLM-powered skill normalization, verification quizzes, gap analysis, and AI match scoring against scraped job postings.</p>
+      <div class="stack-pills">
+        <span class="tag">FastAPI</span>
+        <span class="tag">Next.js</span>
+        <span class="tag">SQLite</span>
+        <span class="tag">PyMuPDF</span>
+        <span class="tag">OpenAI API</span>
+      </div>
+    </header>
+
+    <article class="prose">
+      <h2>Why</h2>
+      <p>The career-ops workflow I use day-to-day runs on a separate system, but I wanted a clean full-stack version that could onboard someone from zero: paste a resume, paste a LinkedIn URL, get a usable skill graph and a gap analysis.</p>
+
+      <h2>What it does</h2>
+      <ul>
+        <li><strong>Resume parsing:</strong> PyMuPDF pulls the text, an LLM normalizes it into a structured skill + experience schema.</li>
+        <li><strong>LinkedIn scraping:</strong> via a Cloudflare API layer to handle the brittleness.</li>
+        <li><strong>GitHub analysis:</strong> pulls repo metadata, README summaries, and language breakdowns.</li>
+        <li><strong>Skill normalization:</strong> LLM collapses "FastAPI / FastApi / fastapi" and similar variants to a canonical vocabulary.</li>
+        <li><strong>Verification quizzes:</strong> generated per skill so claims can be checked.</li>
+        <li><strong>Gap analysis:</strong> compares against a target role and surfaces what's missing.</li>
+        <li><strong>Job match scoring:</strong> scrapes LinkedIn job postings and ranks them against the normalized profile.</li>
+      </ul>
+
+      <h2>Interesting bits</h2>
+      <p>The skill-normalization step matters more than any single scraper. Resumes, LinkedIn, and GitHub all name the same thing differently; without canonicalization the match scores are noise. I kept the canonical vocabulary in a simple SQLite table with alias rows, so the normalizer can be audited and corrected without retraining anything.</p>
+
+      <div class="highlight-grid">
+        <div class="highlight"><div class="highlight-num">3</div><div class="highlight-label">Data sources unified (resume / LinkedIn / GitHub)</div></div>
+        <div class="highlight"><div class="highlight-num">1</div><div class="highlight-label">Canonical skill vocabulary with auditable aliases</div></div>
+        <div class="highlight"><div class="highlight-num">Full</div><div class="highlight-label">Resume → skill graph → job match → gap report loop</div></div>
+      </div>
+
+      <h2>Stack</h2>
+      <p><code>FastAPI</code> · <code>Next.js</code> · <code>SQLite</code> · <code>PyMuPDF</code> · <code>OpenAI API</code> · <code>Cloudflare API</code> · <code>TypeScript</code></p>
+    </article>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <span>© 2026 Animesh Sinha</span>
+    <span><a href="../index.html" style="color: var(--text-dim); text-decoration: none;">← Back home</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

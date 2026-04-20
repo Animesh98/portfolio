@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Homelab Infrastructure — Animesh Sinha</title>
+<meta name="description" content="Ubuntu Server 24.04 self-hosting 10+ Dockerized services behind Tailscale + UFW, with Ollama on an RTX 4060 Ti for local LLM inference." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='32' fill='%237dd3c0'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;450;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a class="brand" href="../index.html"><span class="brand-dot"></span>Animesh</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a class="nav-cta" href="../assets/animesh-sinha-resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="project-page">
+  <div class="container">
+    <a class="back-link" href="../index.html#projects">← All projects</a>
+
+    <header class="project-header">
+      <div class="project-meta">
+        <span>Personal · Infra</span>
+        <span>2025–26</span>
+      </div>
+      <h1>Homelab Infrastructure</h1>
+      <p class="lede">Ubuntu Server 24.04 self-hosting 10+ Dockerized services behind Tailscale + UFW, with a gaming-PC GPU dedicated to local LLM inference and ML experimentation.</p>
+      <div class="stack-pills">
+        <span class="tag">Ubuntu 24.04</span>
+        <span class="tag">Docker</span>
+        <span class="tag">Tailscale</span>
+        <span class="tag">UFW</span>
+        <span class="tag">Ollama</span>
+        <span class="tag">Samba</span>
+      </div>
+    </header>
+
+    <article class="prose">
+      <h2>The setup</h2>
+      <ul>
+        <li><strong>Server:</strong> Ubuntu Server 24.04, 10+ Dockerized services — Jellyfin, qBittorrent, Sonarr, Radarr, Prowlarr, Bazarr, PostgreSQL, Redis, and more.</li>
+        <li><strong>Gaming PC:</strong> Windows + WSL2, RTX 4060 Ti 16 GB. Runs Ollama for local LLM inference and acts as the GPU compute node for ML experiments (Llama QLoRA, Playwright screenshot automation).</li>
+        <li><strong>Networking:</strong> UFW for host firewall, Tailscale VPN mesh between server, gaming PC, and laptop. Samba shares for file access across devices.</li>
+        <li><strong>Access:</strong> Everything is accessible from anywhere via Tailscale — no public ports open.</li>
+      </ul>
+
+      <h2>Why it exists</h2>
+      <p>It's a deliberate playground. I wanted a place to:</p>
+      <ul>
+        <li>Fine-tune and serve models at zero marginal cost.</li>
+        <li>Run long jobs (QLoRA training, batch scrapes) without worrying about cloud bills.</li>
+        <li>Host personal services without handing data to a third party.</li>
+        <li>Stay sharp on Linux admin, networking, and systemd.</li>
+      </ul>
+
+      <div class="highlight-grid">
+        <div class="highlight"><div class="highlight-num">10+</div><div class="highlight-label">Dockerized services on the server</div></div>
+        <div class="highlight"><div class="highlight-num">16&nbsp;GB</div><div class="highlight-label">GPU VRAM for local inference</div></div>
+        <div class="highlight"><div class="highlight-num">0</div><div class="highlight-label">Public ports — everything via Tailscale</div></div>
+      </div>
+
+      <h2>What I've learned</h2>
+      <p>The boring operational skills — systemd unit files, UFW rules, Docker volume discipline, Tailscale ACLs — are the ones that keep a homelab alive. The interesting stuff (Ollama + a custom dashboard) only works because the boring stuff is solid.</p>
+    </article>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <span>© 2026 Animesh Sinha</span>
+    <span><a href="../index.html" style="color: var(--text-dim); text-decoration: none;">← Back home</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jarvis Dashboard — Animesh Sinha</title>
+<meta name="description" content="Homelab control panel — FastAPI + Next.js, 6+ external systems behind a typed adapter layer." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='32' fill='%237dd3c0'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;450;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a class="brand" href="../index.html"><span class="brand-dot"></span>Animesh</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a class="nav-cta" href="../assets/animesh-sinha-resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="project-page">
+  <div class="container">
+    <a class="back-link" href="../index.html#projects">← All projects</a>
+
+    <header class="project-header">
+      <div class="project-meta">
+        <span>Personal · Built with Claude Code</span>
+        <span>2026</span>
+      </div>
+      <h1>Jarvis Dashboard</h1>
+      <p class="lede">A homelab control panel stitching together six external systems behind a typed FastAPI adapter layer, with a Next.js 16 / React 19 frontend.</p>
+      <div class="stack-pills">
+        <span class="tag">FastAPI</span>
+        <span class="tag">Next.js 16</span>
+        <span class="tag">React 19</span>
+        <span class="tag">Docker</span>
+        <span class="tag">Jellyfin</span>
+        <span class="tag">qBittorrent</span>
+        <span class="tag">TMDB</span>
+      </div>
+    </header>
+
+    <article class="prose">
+      <h2>Why</h2>
+      <p>My homelab runs ten+ services, and every one of them has its own admin UI, auth, and quirks. I wanted one place to see everything, and I wanted to build it fast enough that I'd actually finish.</p>
+
+      <h2>What it does</h2>
+      <ul>
+        <li><strong>System monitoring:</strong> live CPU, memory, disk, and network charts from the host.</li>
+        <li><strong>Docker:</strong> list, start, stop, restart containers; tail logs live.</li>
+        <li><strong>Media:</strong> Jellyfin "continue watching" and library grid; qBittorrent torrent search and add.</li>
+        <li><strong>Discovery:</strong> mood-based movie and show discovery across 12 categories, powered by TMDB and Reddit subreddit scraping.</li>
+        <li><strong>Files:</strong> full filesystem explorer across the host.</li>
+      </ul>
+
+      <h2>Architecture</h2>
+      <p>Browser → Next.js → FastAPI → (Docker / Jellyfin / qBittorrent / TMDB / Reddit / SSH).</p>
+      <p>Every external system sits behind its own typed adapter module on the FastAPI side, with its own auth handling, retry policy, and health check. The frontend never talks to external systems directly — everything goes through the adapter layer, which means I can swap or add services without touching the UI.</p>
+
+      <div class="highlight-grid">
+        <div class="highlight"><div class="highlight-num">6+</div><div class="highlight-label">External systems integrated</div></div>
+        <div class="highlight"><div class="highlight-num">12</div><div class="highlight-label">Mood-based discovery categories</div></div>
+        <div class="highlight"><div class="highlight-num">Typed</div><div class="highlight-label">Adapter layer per service</div></div>
+      </div>
+
+      <h2>Shipping velocity</h2>
+      <p>Built almost entirely via <strong>Claude Code skill-based workflows</strong>. The adapter-per-service pattern and typed interfaces meant I could add a new integration in a single afternoon. This is the edge of agentic development: the pattern is the product.</p>
+
+      <h2>Stack</h2>
+      <p><code>FastAPI</code> · <code>Next.js 16</code> · <code>React 19</code> · <code>TypeScript</code> · <code>Docker SDK</code> · <code>Jellyfin API</code> · <code>qBittorrent API</code> · <code>TMDB</code> · <code>Reddit</code> · <code>Tailwind</code></p>
+
+      <p><a href="https://github.com/Animesh98" target="_blank" rel="noopener">github.com/Animesh98</a></p>
+    </article>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <span>© 2026 Animesh Sinha</span>
+    <span><a href="../index.html" style="color: var(--text-dim); text-decoration: none;">← Back home</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Real-time Agentic CRM — Animesh Sinha</title>
+<meta name="description" content="WebRTC + Asterisk + Twilio voice/chat CRM with LlamaIndex-driven live response suggestions." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='32' fill='%237dd3c0'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;450;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a class="brand" href="../index.html"><span class="brand-dot"></span>Animesh</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a class="nav-cta" href="../assets/animesh-sinha-resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="project-page">
+  <div class="container">
+    <a class="back-link" href="../index.html#projects">← All projects</a>
+
+    <header class="project-header">
+      <div class="project-meta">
+        <span>Production · Formee Holdings</span>
+        <span>2025</span>
+      </div>
+      <h1>Real-time Agentic CRM</h1>
+      <p class="lede">A voice + chat customer support CRM with LlamaIndex-driven live response suggestions, extended into a full call center via Asterisk and Twilio.</p>
+      <div class="stack-pills">
+        <span class="tag">WebRTC</span>
+        <span class="tag">Asterisk</span>
+        <span class="tag">Twilio</span>
+        <span class="tag">LlamaIndex</span>
+        <span class="tag">Express.js</span>
+        <span class="tag">Next.js</span>
+        <span class="tag">Python</span>
+      </div>
+    </header>
+
+    <article class="prose">
+      <h2>Context</h2>
+      <p>Formee's student support was bottlenecked on async email + chat. Agents had no way to reach a student live, and when they did, they'd spend half the call hunting through the database for context. The CRM was a second-class surface — not the primary way anyone worked.</p>
+
+      <h2>What I built</h2>
+      <p>A real-time agent desktop with three layers stitched together:</p>
+      <ul>
+        <li><strong>Voice + chat transport:</strong> WebRTC for browser-to-browser calls, Asterisk for PBX routing, and a Twilio trunk for outbound to mobile numbers. A single unified session object on the backend tied a chat thread and a voice leg to the same customer record.</li>
+        <li><strong>Live agentic layer:</strong> LlamaIndex over the active conversation transcript (ASR + chat history) plus the student DB. Every few seconds the agent desktop refreshed a panel of suggested replies, grounded in whatever was on the screen and in the database — with explicit safety guardrails on anything PII-adjacent.</li>
+        <li><strong>Post-call analysis:</strong> After the call ended, an agentic pipeline scored the conversation, pulled action items, and attached them to the student record. Leads got automatic priority tags.</li>
+      </ul>
+
+      <h2>Architecture highlights</h2>
+      <div class="highlight-grid">
+        <div class="highlight"><div class="highlight-num">3</div><div class="highlight-label">Transport layers unified (WebRTC / Asterisk / Twilio)</div></div>
+        <div class="highlight"><div class="highlight-num">&lt;5s</div><div class="highlight-label">Live-suggestion refresh window</div></div>
+        <div class="highlight"><div class="highlight-num">1</div><div class="highlight-label">Session object across voice + chat + DB</div></div>
+      </div>
+
+      <h2>What I learned</h2>
+      <p>The integration boundary — Asterisk ↔ Twilio ↔ LlamaIndex — is where latency and failures hide. If I were building this again, the very first thing I'd add is a probe on every edge with an independent health check. "The voice leg is up" and "the dialplan is up" are not the same statement.</p>
+
+      <p>The other lesson: <strong>live LLM suggestions work only when they're fast and non-intrusive.</strong> A panel that refreshes with a spinner, or takes longer than the agent's own typing speed, gets ignored. Latency is the UX.</p>
+
+      <blockquote>This is the project I point to when people ask what "applied AI" actually looks like in production. It's not a model — it's a pipeline of models glued across three external systems with guardrails on each edge.</blockquote>
+
+      <h2>Stack</h2>
+      <p><code>Next.js</code> · <code>WebRTC</code> · <code>Express.js</code> · <code>Asterisk</code> · <code>Twilio</code> · <code>Python</code> · <code>LlamaIndex</code> · <code>OpenAI API</code> · <code>PostgreSQL</code></p>
+    </article>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <span>© 2026 Animesh Sinha</span>
+    <span><a href="../index.html" style="color: var(--text-dim); text-decoration: none;">← Back home</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

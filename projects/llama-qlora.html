@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Llama 3.1 8B SFT → DPO — Animesh Sinha</title>
+<meta name="description" content="Full SFT → DPO fine-tuning loop on a homelab RTX 4060 Ti with rigorous evaluation." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='32' fill='%237dd3c0'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;450;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a class="brand" href="../index.html"><span class="brand-dot"></span>Animesh</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a class="nav-cta" href="../assets/animesh-sinha-resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="project-page">
+  <div class="container">
+    <a class="back-link" href="../index.html#projects">← All projects</a>
+
+    <header class="project-header">
+      <div class="project-meta">
+        <span>Research · In progress</span>
+        <span>2026</span>
+      </div>
+      <h1>Llama 3.1 8B — SFT&nbsp;→&nbsp;DPO Pipeline</h1>
+      <p class="lede">A full supervised fine-tuning → direct preference optimization loop run on a homelab RTX 4060 Ti, with rigorous evaluation at every step.</p>
+      <div class="stack-pills">
+        <span class="tag">PyTorch</span>
+        <span class="tag">Unsloth</span>
+        <span class="tag">QLoRA</span>
+        <span class="tag">MLflow</span>
+        <span class="tag">W&amp;B</span>
+        <span class="tag">Claude Sonnet judge</span>
+      </div>
+    </header>
+
+    <article class="prose">
+      <h2>The question</h2>
+      <p>Most fine-tuning tutorials run SFT on a dataset, eyeball a few outputs, and call it done. That's not enough to say what fine-tuning actually does to a model. I wanted to run the full <strong>SFT → DPO</strong> loop on a model I could actually feel, and build an evaluation rig honest enough to catch regressions.</p>
+
+      <h2>Setup</h2>
+      <ul>
+        <li><strong>Model:</strong> Llama 3.1 8B Instruct, 4-bit NF4 via Unsloth.</li>
+        <li><strong>Hardware:</strong> Single RTX 4060 Ti (16 GB) on my homelab.</li>
+        <li><strong>SFT data:</strong> Curated Dolly-15k subset, filtered for instruction clarity.</li>
+        <li><strong>DPO data:</strong> UltraFeedback preference pairs.</li>
+        <li><strong>Tracking:</strong> MLflow for experiment metadata, Weights &amp; Biases for loss curves and eval metrics.</li>
+      </ul>
+
+      <h2>Evaluation harness</h2>
+      <p>This is the part I spent the most time on. An SFT that looks good on training loss can easily regress on everything a user cares about.</p>
+      <ul>
+        <li><strong>Held-out perplexity</strong> on a shard never seen during training.</li>
+        <li><strong>Claude Sonnet as pairwise LLM-judge</strong> with explicit A/B position swap to control for position bias.</li>
+        <li><strong>Mini-IFEval</strong> — a slimmed instruction-following benchmark.</li>
+        <li><strong>30-prompt qualitative probe</strong> covering refusal, reasoning, tone, safety, and edge cases.</li>
+        <li><strong>Cross-checkpoint weight-delta diagnostics</strong> — what actually changed, layer by layer.</li>
+      </ul>
+
+      <h2>What happened</h2>
+      <p>SFT phase <strong>regressed</strong> against the base RLHF-tuned Instruct model on the judge metric. The SFT model got more confident on Dolly-style tasks but traded off calibration and safety behavior from the base RLHF pass. This is consistent with what the literature says — RLHF gives you things that a narrow SFT distribution tends to erode — but it's a completely different thing to see the regression on your own curves.</p>
+
+      <p><strong>I documented the regression honestly</strong> rather than hiding it. The DPO phase is queued next; the hypothesis is that preference data will restore some of what SFT traded away.</p>
+
+      <h2>Why this matters for real work</h2>
+      <div class="highlight-grid">
+        <div class="highlight"><div class="highlight-num">A/B swap</div><div class="highlight-label">Position-bias correction in LLM-judge</div></div>
+        <div class="highlight"><div class="highlight-num">5</div><div class="highlight-label">Independent eval signals per checkpoint</div></div>
+        <div class="highlight"><div class="highlight-num">Honest</div><div class="highlight-label">Documented regression, not hidden</div></div>
+      </div>
+
+      <blockquote>The most valuable output of this project isn't a better Llama. It's a repeatable evaluation rig that tells the truth about what a fine-tune did — and the habit of writing down the regression when it happens.</blockquote>
+
+      <h2>Repo</h2>
+      <p>Private on GitHub — happy to share on request. Walks through the full SFT run, logs, and eval outputs.</p>
+    </article>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <span>© 2026 Animesh Sinha</span>
+    <span><a href="../index.html" style="color: var(--text-dim); text-decoration: none;">← Back home</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

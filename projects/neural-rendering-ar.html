@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neural Rendering for AR — Animesh Sinha</title>
+<meta name="description" content="MS thesis at IIT Bombay — NeRF-based approach to occlusion and illumination challenges in AR scene augmentation." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='32' fill='%237dd3c0'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;450;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a class="brand" href="../index.html"><span class="brand-dot"></span>Animesh</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a class="nav-cta" href="../assets/animesh-sinha-resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="project-page">
+  <div class="container">
+    <a class="back-link" href="../index.html#projects">← All projects</a>
+
+    <header class="project-header">
+      <div class="project-meta">
+        <span>MS Thesis · IIT Bombay</span>
+        <span>2023</span>
+      </div>
+      <h1>Neural Rendering for AR</h1>
+      <p class="lede">A NeRF-based approach to occlusion and illumination challenges in AR scene augmentation. Advisor: Prof. Parag K. Chaudhuri. Poster presented at the CSE Research Symposium 2023.</p>
+      <div class="stack-pills">
+        <span class="tag">NeRF</span>
+        <span class="tag">PyTorch</span>
+        <span class="tag">Computer Vision</span>
+        <span class="tag">AR</span>
+        <span class="tag">Neural Rendering</span>
+      </div>
+    </header>
+
+    <article class="prose">
+      <h2>Problem</h2>
+      <p>Classical AR struggles with two things: making a virtual object <strong>hide correctly behind real geometry</strong>, and making it <strong>light up correctly</strong> under the scene's actual lighting. Traditional pipelines approximate each of these with handcrafted passes. NeRFs — implicit volumetric scene representations — give you a principled way to reason about both at once.</p>
+
+      <h2>Approach</h2>
+      <p>I trained <strong>per-object NeRFs</strong> and treated them as <em>composable blocks</em>. A Generalizing module at inference time merged blocks into an intermediate rendering, resolving both occlusion and illumination inside the NeRF's native rendering equation rather than as a post-process.</p>
+      <p>Key insight: if you render the virtual object inside the same NeRF volume as the scene capture, occlusion falls out for free from the volumetric integration, and illumination can be learned from the scene's own radiance field rather than estimated separately.</p>
+
+      <h2>Contribution</h2>
+      <ul>
+        <li>A composable NeRF block structure for AR scenes.</li>
+        <li>A Generalizing module for merged intermediate renderings at inference time.</li>
+        <li>Empirical study of the trade-offs vs. classical occlusion/illumination passes.</li>
+      </ul>
+
+      <h2>Status</h2>
+      <p>Poster presented at the CSE Research Symposium, IIT Bombay (2023). <strong>Thesis not defended; degree not awarded</strong> — I made the call to exit into industry at Formee Holdings.</p>
+
+      <blockquote>This was my first real exposure to the discipline of evaluating generative models. Everything I do today on LLM-judge rigs and held-out evaluation traces back to learning how to measure a NeRF honestly.</blockquote>
+
+      <h2>Stack</h2>
+      <p><code>PyTorch</code> · <code>NeRF</code> · <code>OpenCV</code> · <code>CUDA</code> · <code>Blender</code> (for synthetic scene generation)</p>
+    </article>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <span>© 2026 Animesh Sinha</span>
+    <span><a href="../index.html" style="color: var(--text-dim); text-decoration: none;">← Back home</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>
