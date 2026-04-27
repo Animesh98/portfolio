@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0b" />
+<title>404 — route_not_found · Animesh Sinha</title>
+<meta name="description" content="404 — that route doesn't exist on this site." />
+<meta name="robots" content="noindex" />
+<link rel="canonical" href="https://animesh98.github.io/portfolio/404.html" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='32' fill='%237dd3c0'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;450;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .err-wrap {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 60px 24px;
+  }
+  .err {
+    width: 100%;
+    max-width: 620px;
+    background: linear-gradient(180deg, #0e0e10 0%, #0a0a0c 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,0.7);
+    font-family: var(--ff-mono);
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+  .err .terminal-bar { padding: 11px 14px; }
+  .err-body { padding: 22px 22px 26px; color: var(--text-dim); }
+  .err-code {
+    font-family: var(--ff-display);
+    font-size: clamp(64px, 12vw, 120px);
+    line-height: 1;
+    color: var(--accent);
+    letter-spacing: -0.04em;
+    margin: 8px 0 18px;
+    font-weight: 400;
+  }
+  .err-msg { color: var(--text); margin-bottom: 6px; }
+  .err-out { color: var(--text-dim); padding-left: 16px; }
+  .err-cta { margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .err-cta .btn { padding: 10px 18px; font-size: 13.5px; }
+</style>
+</head>
+<body>
+<div class="err-wrap">
+  <div class="err">
+    <div class="terminal-bar">
+      <span class="terminal-dot" style="background:#ff5f57"></span>
+      <span class="terminal-dot" style="background:#febc2e"></span>
+      <span class="terminal-dot" style="background:#28c840"></span>
+      <span class="terminal-title">animesh@portfolio  —  zsh</span>
+    </div>
+    <div class="err-body">
+      <div class="t-line"><span class="t-prompt">~</span> <span class="t-cmd">cd</span> <span id="errPath"></span></div>
+      <div class="err-out"><span style="color:#f87171">cd:</span> route_not_found</div>
+
+      <div class="err-code">404</div>
+
+      <div class="err-msg">that page doesn't exist on this site.</div>
+      <div class="err-out">try the homepage, or one of the case studies below.</div>
+
+      <div class="err-cta">
+        <a class="btn btn-primary" href="/portfolio/">← Back to home</a>
+        <a class="btn btn-ghost" href="/portfolio/#projects">See projects</a>
+      </div>
+
+      <div class="t-line" style="margin-top:22px"><span class="t-prompt">~</span> <span class="t-cmd" id="errTyped"></span><span class="t-cursor">▍</span></div>
+    </div>
+  </div>
+</div>
+<script>
+  const path = location.pathname.replace('/portfolio/', '/') || '/';
+  const pathEl = document.getElementById('errPath');
+  if (pathEl) pathEl.textContent = path;
+
+  const typedEl = document.getElementById('errTyped');
+  if (typedEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const text = 'cd ~/portfolio';
+    let n = 0;
+    const step = () => {
+      typedEl.textContent = text.slice(0, ++n);
+      if (n < text.length) setTimeout(step, 80 + Math.random() * 40);
+      else setTimeout(() => location.href = '/portfolio/', 1200);
+    };
+    setTimeout(step, 600);
+  }
+</script>
+</body>
+</html>
