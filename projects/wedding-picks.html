@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0b" />
+<title>Wedding Picks — Tinder for ~6,000 wedding photos · Animesh Sinha</title>
+<meta name="description" content="A weekend-built photo culling tool that streams ~6,000 wedding photos straight off Google Drive (no re-uploads), with swipe-to-keep UX and a persistent verdict log." />
+<meta name="author" content="Animesh Sinha" />
+<link rel="canonical" href="https://animesh98.github.io/portfolio/projects/wedding-picks.html" />
+<meta property="og:title" content="Wedding Picks — Tinder for ~6,000 wedding photos" />
+<meta property="og:description" content="Weekend project. FastAPI streams from Google Drive, swipe to keep/discard/favorite, resumable session." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://animesh98.github.io/portfolio/projects/wedding-picks.html" />
+<meta property="og:image" content="https://animesh98.github.io/portfolio/assets/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='32' fill='%237dd3c0'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;450;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a class="brand" href="../index.html"><span class="brand-dot"></span>Animesh</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a class="nav-cta" href="../assets/animesh-sinha-resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="project-page" data-slug="wedding-picks">
+  <div class="container">
+    <a class="back-link" href="../index.html#projects">← All projects</a>
+
+    <header class="project-header project-header-v2">
+      <div class="ph-meta">
+        <span class="badge badge-personal">Personal</span>
+        <span class="ph-divider">·</span>
+        <span>Shipped in a weekend</span>
+        <span class="ph-divider">·</span>
+        <span>2026</span>
+        <span class="ph-divider">·</span>
+        <span class="ph-readtime"><span id="readTime">…</span> min read</span>
+      </div>
+      <h1>Wedding Picks — Tinder for ~6,000 wedding photos</h1>
+      <p class="lede">My family had ~6,000 photos sitting in a Google Drive folder after a wedding and no realistic plan to pick favorites. Importing them all into a desktop tool was painful. So I built the laziest possible thing that worked.</p>
+      <div class="stack-pills">
+        <span class="tag">FastAPI</span>
+        <span class="tag">Google Drive API</span>
+        <span class="tag">Vanilla JS</span>
+        <span class="tag">SQLite</span>
+        <span class="tag">Tailscale</span>
+      </div>
+    </header>
+
+    <article class="prose">
+      <h2>The constraint</h2>
+      <p>Three constraints pinned the design before I wrote a line of code:</p>
+      <ul>
+        <li><strong>No re-uploads.</strong> 6,000 photos at ~5 MB each is 30 GB. The photos already live in Drive — copying them anywhere else would be the most expensive step in the whole flow.</li>
+        <li><strong>Resumable.</strong> Family members were going to do this in 15-minute chunks across days. Losing progress on a refresh was unacceptable.</li>
+        <li><strong>Phone-first.</strong> Everyone was going to use it on a phone, sitting on a couch. Tinder's swipe UX is the right primitive — keep, discard, or "yes please" — because it's literally what people are already doing in their heads.</li>
+      </ul>
+
+      <h2>What I built</h2>
+      <ul>
+        <li><strong>FastAPI</strong> backend with two surfaces: a <code>/photos</code> endpoint that streams the next photo straight from Google Drive (no local copy), and a <code>/verdict</code> endpoint that records keep/discard/favorite into SQLite.</li>
+        <li><strong>Google Drive API</strong> with a service-account credential — the backend opens an authenticated stream to the file and pipes it to the client. Drive does the bandwidth, my server does the routing. Bytes never hit my disk.</li>
+        <li><strong>Vanilla JS</strong> on the frontend — three swipe gestures (left = discard, right = keep, up = favorite), preloads the next two images so swipes feel instant, persists the cursor in <code>localStorage</code> so refreshing doesn't lose your place.</li>
+        <li><strong>SQLite</strong> verdict log, one row per photo per user — supports multiple family members reviewing in parallel without conflicts.</li>
+        <li><strong>Tailscale</strong> exposed it inside the family network on port <code>:8002</code>. No public hosting, no ad-blockers, no auth grief.</li>
+      </ul>
+
+      <h2>Architecture highlights</h2>
+      <div class="highlight-grid">
+        <div class="highlight"><div class="highlight-num">~6,000</div><div class="highlight-label">photos sorted, zero re-uploads</div></div>
+        <div class="highlight"><div class="highlight-num">0 GB</div><div class="highlight-label">local disk used (Drive streams through)</div></div>
+        <div class="highlight"><div class="highlight-num">2 days</div><div class="highlight-label">spec → working tool, on the couch</div></div>
+        <div class="highlight"><div class="highlight-num">3</div><div class="highlight-label">family members reviewing in parallel</div></div>
+      </div>
+
+      <h2>What I learned</h2>
+      <p>The right answer to "I have 30 GB of media and a UX problem" is almost never "build storage." It's "stream the bytes you already have and put a tiny database next to the verdicts." This is the same lesson that shows up everywhere applied AI lives: the model isn't the bottleneck, the data plumbing is.</p>
+
+      <p>The other lesson: <strong>weekend tools should look like weekend tools, not like products.</strong> I spent zero minutes on a logo, no time on settings, no time on accounts. The whole thing fit in three files. It worked the first time someone tried it because there was nothing in the way.</p>
+
+      <blockquote>The point of a portfolio isn't only the load-bearing flagship projects. It's also the "I had a problem on Saturday morning and shipped a tool by Sunday night" projects, because that's the actual signal of how someone works.</blockquote>
+
+      <h2>Stack</h2>
+      <p><code>Python</code> · <code>FastAPI</code> · <code>Google Drive API</code> · <code>SQLite</code> · <code>Vanilla JS</code> · <code>Tailscale</code></p>
+    </article>
+
+    <nav class="proj-nav" id="projNav" aria-label="Project navigation"></nav>
+  </div>
+</div>
+
+<footer>
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <div class="footer-brand"><span class="brand-dot"></span><span>Animesh Sinha</span></div>
+      <div class="footer-meta">
+        <span class="footer-status"><span class="t-dot t-dot-on"></span>Available · senior AI/ML roles</span>
+        <span>Bengaluru, India · <span id="footClock">--:-- IST</span></span>
+      </div>
+    </div>
+    <div class="footer-col footer-links">
+      <a href="../index.html">← Back home</a>
+      <a href="https://github.com/Animesh98" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="mailto:animesh09021998@gmail.com">Email ↗</a>
+    </div>
+    <div class="footer-col footer-sig">
+      © 2026 · Built with <a href="https://claude.com/claude-code" target="_blank" rel="noopener">Claude Code</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

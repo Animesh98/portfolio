@@ -25,14 +25,19 @@
   </div>
 </nav>
 
-<div class="project-page">
+<div class="project-page" data-slug="formee-crm">
   <div class="container">
     <a class="back-link" href="../index.html#projects">← All projects</a>
 
-    <header class="project-header">
-      <div class="project-meta">
-        <span>Production · Formee Holdings</span>
+    <header class="project-header project-header-v2">
+      <div class="ph-meta">
+        <span class="badge badge-prod">Production</span>
+        <span class="ph-divider">·</span>
+        <span>Formee Holdings</span>
+        <span class="ph-divider">·</span>
         <span>2025</span>
+        <span class="ph-divider">·</span>
+        <span class="ph-readtime"><span id="readTime">…</span> min read</span>
       </div>
       <h1>Real-time Agentic CRM</h1>
       <p class="lede">A voice + chat customer support CRM with LlamaIndex-driven live response suggestions, extended into a full call center via Asterisk and Twilio.</p>
@@ -76,13 +81,28 @@
       <h2>Stack</h2>
       <p><code>Next.js</code> · <code>WebRTC</code> · <code>Express.js</code> · <code>Asterisk</code> · <code>Twilio</code> · <code>Python</code> · <code>LlamaIndex</code> · <code>OpenAI API</code> · <code>PostgreSQL</code></p>
     </article>
+
+    <nav class="proj-nav" id="projNav" aria-label="Project navigation"></nav>
   </div>
 </div>
 
 <footer>
-  <div class="container">
-    <span>© 2026 Animesh Sinha</span>
-    <span><a href="../index.html" style="color: var(--text-dim); text-decoration: none;">← Back home</a></span>
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <div class="footer-brand"><span class="brand-dot"></span><span>Animesh Sinha</span></div>
+      <div class="footer-meta">
+        <span class="footer-status"><span class="t-dot t-dot-on"></span>Available · senior AI/ML roles</span>
+        <span>Bengaluru, India · <span id="footClock">--:-- IST</span></span>
+      </div>
+    </div>
+    <div class="footer-col footer-links">
+      <a href="../index.html">← Back home</a>
+      <a href="https://github.com/Animesh98" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="mailto:animesh09021998@gmail.com">Email ↗</a>
+    </div>
+    <div class="footer-col footer-sig">
+      © 2026 · Built with <a href="https://claude.com/claude-code" target="_blank" rel="noopener">Claude Code</a>
+    </div>
   </div>
 </footer>
 

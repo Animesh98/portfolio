@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0b" />
+<title>Reelforge — Multi-model AI Video Platform · Animesh Sinha</title>
+<meta name="description" content="One-wallet router across fal.ai's full model catalog (Kling, Seedance, Wan, Veo, Flux). Six generation modes, async queue, Director Mode for end-to-end video. Solo build, ~18.7k LOC." />
+<meta name="author" content="Animesh Sinha" />
+<link rel="canonical" href="https://animesh98.github.io/portfolio/projects/reelforge.html" />
+<meta property="og:title" content="Reelforge — Multi-model AI Video Platform" />
+<meta property="og:description" content="A one-wallet router across fal.ai's full model catalog. 17 endpoints, 6 modes, Director Mode. Solo full-stack build." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://animesh98.github.io/portfolio/projects/reelforge.html" />
+<meta property="og:image" content="https://animesh98.github.io/portfolio/assets/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='32' fill='%237dd3c0'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;450;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a class="brand" href="../index.html"><span class="brand-dot"></span>Animesh</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a class="nav-cta" href="../assets/animesh-sinha-resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="project-page" data-slug="reelforge">
+  <div class="container">
+    <a class="back-link" href="../index.html#projects">← All projects</a>
+
+    <header class="project-header project-header-v2">
+      <div class="ph-meta">
+        <span class="badge badge-flag">Flagship</span>
+        <span class="ph-divider">·</span>
+        <span>Personal · Solo build</span>
+        <span class="ph-divider">·</span>
+        <span>2026-Q1 → present</span>
+        <span class="ph-divider">·</span>
+        <span class="ph-readtime"><span id="readTime">…</span> min read</span>
+      </div>
+      <h1>Reelforge — Multi-model AI Video & Image Generation Platform</h1>
+      <p class="lede">Agencies already pay Runway for hero shots, Kling for volume, Pika for social. Reelforge is the <strong>one-wallet router</strong> that lets them swap models per-mode without switching tools — across fal.ai's full catalog of 17 endpoints, with a Director Mode that goes script → storyboard → parallel renders → stitched MP4.</p>
+      <div class="stack-pills">
+        <span class="tag">Next.js 15</span>
+        <span class="tag">React 19</span>
+        <span class="tag">TypeScript strict</span>
+        <span class="tag">fal.ai</span>
+        <span class="tag">Neon Postgres + Drizzle</span>
+        <span class="tag">Cloudflare R2</span>
+        <span class="tag">Clerk</span>
+        <span class="tag">OpenAI gpt-4.1-mini</span>
+        <span class="tag">ffmpeg</span>
+        <span class="tag">Bun</span>
+      </div>
+    </header>
+
+    <article class="prose">
+      <h2>Product thesis</h2>
+      <p>The video-AI market is exploding into <em>specialized</em> models. Kling 2.5 is great at human motion, Seedance is great at cinematic motion control, Wan 2.5 is fast and cheap, Veo is the prestige play, Nano Banana is for fast image edits. Agencies and creators today juggle subscriptions, dashboards, and credits across half a dozen vendors.</p>
+      <p>Reelforge collapses that into one router with one wallet, one prompt enhancer, and one consistent UI. The differentiator: a <strong>Director Mode</strong> that takes a script, plans a storyboard, fires shots in parallel across whatever models suit each shot, and stitches the result into a single MP4 — server-side, with ffmpeg.</p>
+
+      <h2>Architecture highlights</h2>
+
+      <h3>Discriminated-union model registry</h3>
+      <p>One <code>GenerateInput</code> TypeScript union covers <strong>17 fal endpoints</strong> across <strong>6 generation modes</strong> (T2V, I2V, F2F, MC, MR, T2I, I2I). Zod-validated at the API boundary; the dashboard form, the API route, and <code>buildFalInput()</code> all narrow against the same type. Per-model invariants live in two helpers — <code>clampDuration(model, n)</code> and <code>clampAspect(model, s)</code> — that encode the fal endpoint quirks I learned the hard way (e.g. wan-2.5 only accepts <code>duration ∈ {5, 10}</code>; kling-2.5-i2v inherits aspect from the input image and rejects an explicit one). Six concrete invariants are codified as non-revertible rules in <code>AGENTS.md</code> so the next person doesn't relearn them.</p>
+
+      <h3>Async generation lifecycle</h3>
+      <p><code>POST /api/generate</code> writes a row, hands the request to <code>fal.queue.submit()</code>, and returns instantly. Two paths follow:</p>
+      <ul>
+        <li><strong>Polling</strong> via <code>/api/generations/[id]</code> with exponential backoff — cheap, works everywhere, used by the dashboard.</li>
+        <li><strong>Webhook receiver</strong> at <code>/api/webhooks/fal</code> — the production path with <code>APP_URL</code>, fires when fal calls back, updates the row.</li>
+      </ul>
+      <p>One retry on retryable 4xx/5xx; validation errors fail fast. <code>enrichFalError()</code> unwraps fal's generic <code>"Unprocessable Entity"</code> into field-level <code>ApiError.body.detail</code> reasons so users see <code>"aspect_ratio: must be one of 16:9, 9:16, 1:1"</code> instead of a useless HTTP status.</p>
+
+      <h3>Director Mode v2</h3>
+      <p>A five-phase resumable workspace (Script · Lookbook · Shotlist · Sequence · Export) persisted across <strong>6 Postgres tables</strong>. GPT-4.1-mini is the storyboard planner; <strong>lookbook-first</strong> character/location consistency means the planner's shots reference established lookbook assets instead of redrawing the world each shot. Shots render in parallel; server-side ffmpeg stitches the result into a single MP4. v1 is preserved at <code>/director/v1</code> for comparison.</p>
+
+      <h3>Cost transparency</h3>
+      <p>Per-model <code>estimateCost()</code> drives a single calculator that flows into the dashboard preview, per-shot cost line, and project-cost rollup. Regression-tested at ±4% (a 5s MR shot ≈ $1.51). The function is <em>opinionated</em> about the gap between published and real rates — fal's published $0.18/s for seedance-2-ref is real for video refs but jumps to $0.3024/s for image refs. I learned this by burning $2.90 on two demo renders before realizing the discount didn't apply.</p>
+
+      <h2>Hard problems solved</h2>
+      <div class="highlight-grid">
+        <div class="highlight"><div class="highlight-num">17</div><div class="highlight-label">fal endpoints under one typed union</div></div>
+        <div class="highlight"><div class="highlight-num">6</div><div class="highlight-label">generation modes routed through one dashboard</div></div>
+        <div class="highlight"><div class="highlight-num">~18.7k</div><div class="highlight-label">LOC of TS/TSX, 130 files, solo</div></div>
+        <div class="highlight"><div class="highlight-num">±4%</div><div class="highlight-label">Cost-estimator regression tolerance</div></div>
+      </div>
+
+      <h3>1. fal.ai schema drift</h3>
+      <p>Every video endpoint <em>claims</em> to take <code>duration: number</code>, but several reject it as a string-typed enum subset. I wrote <code>clampDuration</code> / <code>clampAspect</code> after a wan-2.5 422 storm and codified them as invariants. Six concrete invariants live in <code>AGENTS.md</code>.</p>
+
+      <h3>2. Mock-vs-prod cost divergence</h3>
+      <p>fal published <code>$0.18/s</code> for seedance-2-ref. Real billing came in at <code>$0.3024/s</code> for image refs. Caught after burning $2.90 on two demo renders. Now regression-tested.</p>
+
+      <h3>3. WSL2 + Neon serverless drivers</h3>
+      <p>Neon's websocket and HTTP serverless drivers <strong>both fail</strong> on WSL2 because Node's <code>fetch</code> + happy-eyeballs interleaves IPv6/IPv4 lookups in a way Neon's WS handshake can't survive. Switched to <code>pg</code> over plain TCP with forced IPv4 DNS order at module load in <code>lib/db/index.ts</code>. Documented as a non-revertible invariant.</p>
+
+      <h3>4. Generic error masking</h3>
+      <p>fal's queue surfaces 422s as <code>"Unprocessable Entity"</code> with the real reason buried inside <code>ApiError.body.detail</code>. Wrote <code>enrichFalError()</code> to unwrap the ValidationError shape so the user sees the actual field that broke instead of a useless status code.</p>
+
+      <h3>5. Director Mode planner blind spot</h3>
+      <p>GPT proposed I2V shots without references because it didn't know what was rendered yet. <code>resolveShotReferences()</code> auto-binds the first lookbook location URL or falls back to T2V; the planner can no longer deadlock the renderer.</p>
+
+      <h2>Skills exercised</h2>
+      <ul>
+        <li><strong>Production LLM apps</strong> — prompt engineering across 11 verified models, structured-output planners (storyboard generation), Zod-validated tool boundaries.</li>
+        <li><strong>Discriminated unions at the system boundary</strong> — one type for 6 modes × 11 models, narrowed in API routes, in <code>buildFalInput</code>, in the dashboard form.</li>
+        <li><strong>Async job orchestration</strong> — queue submit + polling + webhooks + retries + error normalization.</li>
+        <li><strong>Postgres schema design</strong> — Drizzle as source of truth, manual psql migrations, indexes added when <code>count(*)</code> rate-limit checks slowed down.</li>
+        <li><strong>Edge storage</strong> — R2 presigned uploads, server-side mirroring of generation outputs, cost-aware bandwidth.</li>
+        <li><strong>Design systems from first principles</strong> — Dark Room Editorial token system; warm paper↔ink with an ember <code>#ea7a3c</code> accent; Simple/Pro dual-mode contract; AI affordance language (<code>✦</code> glyph + dashed ember border).</li>
+      </ul>
+
+      <blockquote>The thing I'm most proud of isn't the model count — it's that the type system catches a wan-2.5 duration mismatch at compile time, the API surface catches it at the boundary, and the dashboard never lets the user submit it. Three layers, one source of truth.</blockquote>
+
+      <h2>Stack</h2>
+      <p><code>Next.js 15</code> · <code>React 19</code> · <code>TypeScript strict</code> · <code>Clerk</code> · <code>Neon Postgres</code> · <code>Drizzle</code> · <code>pg</code> · <code>Cloudflare R2</code> · <code>fal.ai</code> · <code>OpenAI gpt-4.1-mini</code> · <code>ffmpeg</code> · <code>Tailwind 3</code> · <code>Radix UI</code> · <code>Bun test</code></p>
+    </article>
+
+    <nav class="proj-nav" id="projNav" aria-label="Project navigation"></nav>
+  </div>
+</div>
+
+<footer>
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <div class="footer-brand"><span class="brand-dot"></span><span>Animesh Sinha</span></div>
+      <div class="footer-meta">
+        <span class="footer-status"><span class="t-dot t-dot-on"></span>Available · senior AI/ML roles</span>
+        <span>Bengaluru, India · <span id="footClock">--:-- IST</span></span>
+      </div>
+    </div>
+    <div class="footer-col footer-links">
+      <a href="../index.html">← Back home</a>
+      <a href="https://github.com/Animesh98" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="mailto:animesh09021998@gmail.com">Email ↗</a>
+    </div>
+    <div class="footer-col footer-sig">
+      © 2026 · Built with <a href="https://claude.com/claude-code" target="_blank" rel="noopener">Claude Code</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

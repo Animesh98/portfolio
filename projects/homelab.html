@@ -25,14 +25,19 @@
   </div>
 </nav>
 
-<div class="project-page">
+<div class="project-page" data-slug="homelab">
   <div class="container">
     <a class="back-link" href="../index.html#projects">← All projects</a>
 
-    <header class="project-header">
-      <div class="project-meta">
-        <span>Personal · Infra</span>
+    <header class="project-header project-header-v2">
+      <div class="ph-meta">
+        <span class="badge badge-personal">Personal</span>
+        <span class="ph-divider">·</span>
+        <span>Infra</span>
+        <span class="ph-divider">·</span>
         <span>2025–26</span>
+        <span class="ph-divider">·</span>
+        <span class="ph-readtime"><span id="readTime">…</span> min read</span>
       </div>
       <h1>Homelab Infrastructure</h1>
       <p class="lede">Ubuntu Server 24.04 self-hosting 10+ Dockerized services behind Tailscale + UFW, with a gaming-PC GPU dedicated to local LLM inference and ML experimentation.</p>
@@ -73,13 +78,27 @@
       <h2>What I've learned</h2>
       <p>The boring operational skills — systemd unit files, UFW rules, Docker volume discipline, Tailscale ACLs — are the ones that keep a homelab alive. The interesting stuff (Ollama + a custom dashboard) only works because the boring stuff is solid.</p>
     </article>
+    <nav class="proj-nav" id="projNav" aria-label="Project navigation"></nav>
   </div>
 </div>
 
 <footer>
-  <div class="container">
-    <span>© 2026 Animesh Sinha</span>
-    <span><a href="../index.html" style="color: var(--text-dim); text-decoration: none;">← Back home</a></span>
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <div class="footer-brand"><span class="brand-dot"></span><span>Animesh Sinha</span></div>
+      <div class="footer-meta">
+        <span class="footer-status"><span class="t-dot t-dot-on"></span>Available · senior AI/ML roles</span>
+        <span>Bengaluru, India · <span id="footClock">--:-- IST</span></span>
+      </div>
+    </div>
+    <div class="footer-col footer-links">
+      <a href="../index.html">← Back home</a>
+      <a href="https://github.com/Animesh98" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="mailto:animesh09021998@gmail.com">Email ↗</a>
+    </div>
+    <div class="footer-col footer-sig">
+      © 2026 · Built with <a href="https://claude.com/claude-code" target="_blank" rel="noopener">Claude Code</a>
+    </div>
   </div>
 </footer>
 

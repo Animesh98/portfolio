@@ -25,14 +25,19 @@
   </div>
 </nav>
 
-<div class="project-page">
+<div class="project-page" data-slug="jarvis-dashboard">
   <div class="container">
     <a class="back-link" href="../index.html#projects">← All projects</a>
 
-    <header class="project-header">
-      <div class="project-meta">
-        <span>Personal · Built with Claude Code</span>
+    <header class="project-header project-header-v2">
+      <div class="ph-meta">
+        <span class="badge badge-personal">Personal</span>
+        <span class="ph-divider">·</span>
+        <span>Built with Claude Code</span>
+        <span class="ph-divider">·</span>
         <span>2026</span>
+        <span class="ph-divider">·</span>
+        <span class="ph-readtime"><span id="readTime">…</span> min read</span>
       </div>
       <h1>Jarvis Dashboard</h1>
       <p class="lede">A homelab control panel stitching together six external systems behind a typed FastAPI adapter layer, with a Next.js 16 / React 19 frontend.</p>
@@ -78,13 +83,27 @@
 
       <p><a href="https://github.com/Animesh98" target="_blank" rel="noopener">github.com/Animesh98</a></p>
     </article>
+    <nav class="proj-nav" id="projNav" aria-label="Project navigation"></nav>
   </div>
 </div>
 
 <footer>
-  <div class="container">
-    <span>© 2026 Animesh Sinha</span>
-    <span><a href="../index.html" style="color: var(--text-dim); text-decoration: none;">← Back home</a></span>
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <div class="footer-brand"><span class="brand-dot"></span><span>Animesh Sinha</span></div>
+      <div class="footer-meta">
+        <span class="footer-status"><span class="t-dot t-dot-on"></span>Available · senior AI/ML roles</span>
+        <span>Bengaluru, India · <span id="footClock">--:-- IST</span></span>
+      </div>
+    </div>
+    <div class="footer-col footer-links">
+      <a href="../index.html">← Back home</a>
+      <a href="https://github.com/Animesh98" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="mailto:animesh09021998@gmail.com">Email ↗</a>
+    </div>
+    <div class="footer-col footer-sig">
+      © 2026 · Built with <a href="https://claude.com/claude-code" target="_blank" rel="noopener">Claude Code</a>
+    </div>
   </div>
 </footer>
 

@@ -25,14 +25,19 @@
   </div>
 </nav>
 
-<div class="project-page">
+<div class="project-page" data-slug="neural-rendering-ar">
   <div class="container">
     <a class="back-link" href="../index.html#projects">← All projects</a>
 
-    <header class="project-header">
-      <div class="project-meta">
-        <span>MS Thesis · IIT Bombay</span>
+    <header class="project-header project-header-v2">
+      <div class="ph-meta">
+        <span class="badge badge-research">Thesis</span>
+        <span class="ph-divider">·</span>
+        <span>IIT Bombay</span>
+        <span class="ph-divider">·</span>
         <span>2023</span>
+        <span class="ph-divider">·</span>
+        <span class="ph-readtime"><span id="readTime">…</span> min read</span>
       </div>
       <h1>Neural Rendering for AR</h1>
       <p class="lede">A NeRF-based approach to occlusion and illumination challenges in AR scene augmentation. Advisor: Prof. Parag K. Chaudhuri. Poster presented at the CSE Research Symposium 2023.</p>
@@ -68,13 +73,27 @@
       <h2>Stack</h2>
       <p><code>PyTorch</code> · <code>NeRF</code> · <code>OpenCV</code> · <code>CUDA</code> · <code>Blender</code> (for synthetic scene generation)</p>
     </article>
+    <nav class="proj-nav" id="projNav" aria-label="Project navigation"></nav>
   </div>
 </div>
 
 <footer>
-  <div class="container">
-    <span>© 2026 Animesh Sinha</span>
-    <span><a href="../index.html" style="color: var(--text-dim); text-decoration: none;">← Back home</a></span>
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <div class="footer-brand"><span class="brand-dot"></span><span>Animesh Sinha</span></div>
+      <div class="footer-meta">
+        <span class="footer-status"><span class="t-dot t-dot-on"></span>Available · senior AI/ML roles</span>
+        <span>Bengaluru, India · <span id="footClock">--:-- IST</span></span>
+      </div>
+    </div>
+    <div class="footer-col footer-links">
+      <a href="../index.html">← Back home</a>
+      <a href="https://github.com/Animesh98" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="mailto:animesh09021998@gmail.com">Email ↗</a>
+    </div>
+    <div class="footer-col footer-sig">
+      © 2026 · Built with <a href="https://claude.com/claude-code" target="_blank" rel="noopener">Claude Code</a>
+    </div>
   </div>
 </footer>
 
