@@ -243,19 +243,35 @@
     <div class="section-label reveal">02 — Selected Projects</div>
     <h2 class="reveal">Things I've <em>built</em>.</h2>
 
-    <div class="projects-grid">
-      <a class="project-card reveal" href="projects/formee-crm.html">
-        <div class="project-meta"><span>Production</span><span>2025</span></div>
+    <!-- Featured project -->
+    <a class="project-featured reveal" href="projects/formee-crm.html">
+      <div class="featured-art" aria-hidden="true">
+        <div class="featured-art-pulse"></div>
+        <div class="featured-art-grid">
+          <div class="art-row"><span class="art-dot art-dot-on"></span><span>caller_42  &nbsp;<i>connected</i></span><span class="art-meta">RTP · OPUS</span></div>
+          <div class="art-row"><span class="art-dot art-dot-warn"></span><span>llm_suggest  &nbsp;<i>streaming</i></span><span class="art-meta">tok 187/300</span></div>
+          <div class="art-row"><span class="art-dot art-dot-on"></span><span>rag_lookup  &nbsp;<i>4 hits</i></span><span class="art-meta">faiss · 38ms</span></div>
+          <div class="art-row art-row-dim"><span class="art-dot"></span><span>guardrail_check</span><span class="art-meta">pass</span></div>
+          <div class="art-row art-row-dim"><span class="art-dot"></span><span>asterisk_dialplan</span><span class="art-meta">ok</span></div>
+        </div>
+      </div>
+      <div class="featured-body">
+        <div class="project-meta">
+          <span><span class="badge badge-prod">Production</span> · Featured</span>
+          <span>2025</span>
+        </div>
         <h3>Real-time Agentic CRM</h3>
-        <p>A WebRTC + Asterisk + Twilio voice/chat CRM with LlamaIndex-driven live response suggestions over active conversation transcripts and DB lookups. Agent desktop, dialplan, and post-call agentic lead analysis — end-to-end.</p>
+        <p class="featured-lede">A WebRTC + Asterisk + Twilio voice/chat CRM with LlamaIndex-driven live response suggestions over active conversation transcripts and DB lookups. Agent desktop, dialplan, and post-call agentic lead analysis — end-to-end.</p>
         <div class="tag-row">
-          <span class="tag">WebRTC</span><span class="tag">Asterisk</span><span class="tag">Twilio</span><span class="tag">LlamaIndex</span>
+          <span class="tag">WebRTC</span><span class="tag">Asterisk</span><span class="tag">Twilio</span><span class="tag">LlamaIndex</span><span class="tag">FastAPI</span>
         </div>
         <span class="project-arrow">Read case study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
-      </a>
+      </div>
+    </a>
 
+    <div class="projects-grid">
       <a class="project-card reveal" href="projects/llama-qlora.html">
-        <div class="project-meta"><span>Research · In progress</span><span>2026</span></div>
+        <div class="project-meta"><span><span class="badge badge-research">Research</span> · In progress</span><span>2026</span></div>
         <h3>Llama 3.1 8B — SFT → DPO</h3>
         <p>Full fine-tuning loop on a homelab RTX 4060 Ti (Unsloth, 4-bit NF4). SFT on Dolly-15k, DPO on UltraFeedback. Evaluated with held-out perplexity, Claude Sonnet as pairwise LLM-judge with A/B swap, mini-IFEval, and weight-delta diagnostics.</p>
         <div class="tag-row">
@@ -265,7 +281,7 @@
       </a>
 
       <a class="project-card reveal" href="projects/jarvis-dashboard.html">
-        <div class="project-meta"><span>Personal · Built with Claude Code</span><span>2026</span></div>
+        <div class="project-meta"><span><span class="badge badge-personal">Personal</span> · Built with Claude Code</span><span>2026</span></div>
         <h3>Jarvis Dashboard</h3>
         <p>Homelab control panel — FastAPI + Next.js 16 / React 19. System monitoring, Docker container management with live logs, Jellyfin media integration, mood-based movie discovery, full file explorer. 6+ external systems behind a typed adapter layer.</p>
         <div class="tag-row">
@@ -275,7 +291,7 @@
       </a>
 
       <a class="project-card reveal" href="projects/career-prep.html">
-        <div class="project-meta"><span>Personal · Full-stack</span><span>2026</span></div>
+        <div class="project-meta"><span><span class="badge badge-personal">Personal</span> · Full-stack</span><span>2026</span></div>
         <h3>Career Prep Platform</h3>
         <p>Full-stack career intelligence platform — FastAPI + Next.js + SQLite. Resume parsing (PyMuPDF + LLM), LinkedIn scraping, GitHub analysis, LLM-powered skill normalization, verification quizzes, gap analysis, job match scoring.</p>
         <div class="tag-row">
@@ -285,7 +301,7 @@
       </a>
 
       <a class="project-card reveal" href="projects/neural-rendering-ar.html">
-        <div class="project-meta"><span>MS Thesis · IIT Bombay</span><span>2023</span></div>
+        <div class="project-meta"><span><span class="badge badge-research">Thesis</span> · IIT Bombay</span><span>2023</span></div>
         <h3>Neural Rendering for AR</h3>
         <p>A NeRF-based approach to occlusion and illumination challenges in AR scene augmentation. Extended individual NeRFs as composable blocks via a Generalizing module for intermediate merged renderings. Poster at CSE Research Symposium 2023.</p>
         <div class="tag-row">
@@ -295,7 +311,7 @@
       </a>
 
       <a class="project-card reveal" href="projects/homelab.html">
-        <div class="project-meta"><span>Personal · Infra</span><span>2025–26</span></div>
+        <div class="project-meta"><span><span class="badge badge-personal">Infra</span> · Personal</span><span>2025–26</span></div>
         <h3>Homelab Infrastructure</h3>
         <p>Ubuntu Server 24.04 self-hosting 10+ Dockerized services: Jellyfin, qBittorrent, Sonarr, Radarr, PostgreSQL, Redis. UFW firewall, Tailscale VPN mesh, Samba shares. Gaming PC with RTX 4060 Ti 16 GB running Ollama for local LLM inference.</p>
         <div class="tag-row">
