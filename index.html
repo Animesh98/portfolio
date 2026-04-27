@@ -119,28 +119,78 @@
 
 <!-- HERO -->
 <header class="hero">
-  <div class="container">
-    <div class="hero-badge reveal">
-      <span class="status"></span>
-      Open to senior AI/ML roles · Bengaluru or Remote
+  <div class="hero-glow" id="heroGlow" aria-hidden="true"></div>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <div class="hero-badge reveal">
+        <span class="status"></span>
+        Open to senior AI/ML roles · Bengaluru or Remote
+      </div>
+      <h1 class="reveal">
+        Building <em>AI systems</em><br />that make life&nbsp;easy.
+      </h1>
+      <p class="hero-sub reveal">
+        I'm Animesh — an applied AI/ML engineer with <strong>1 year 8 months</strong> shipping LLM-powered products, RAG pipelines, and real-time agentic systems at Formee Holdings. IIT Bombay graduate coursework in CS (CPI 8.72). Daily driver of <strong>Claude Code</strong> for end-to-end agentic development.
+      </p>
+      <div class="hero-cta reveal">
+        <a class="btn btn-primary" href="#projects">
+          See selected work
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="mailto:animesh09021998@gmail.com">
+          Say hello
+        </a>
+      </div>
     </div>
-    <h1 class="reveal">
-      Building <em>AI systems</em><br />that make life&nbsp;easy.
-    </h1>
-    <p class="hero-sub reveal">
-      I'm Animesh — an applied AI/ML engineer with <strong>1 year 8 months</strong> shipping LLM-powered products, RAG pipelines, and real-time agentic systems at Formee Holdings. IIT Bombay graduate coursework in CS (CPI 8.72). Daily driver of <strong>Claude Code</strong> for end-to-end agentic development.
-    </p>
-    <div class="hero-cta reveal">
-      <a class="btn btn-primary" href="#projects">
-        See selected work
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </a>
-      <a class="btn btn-ghost" href="mailto:animesh09021998@gmail.com">
-        Say hello
-      </a>
-    </div>
+
+    <aside class="terminal reveal" aria-label="Live status panel">
+      <div class="terminal-bar">
+        <span class="terminal-dot" style="background:#ff5f57"></span>
+        <span class="terminal-dot" style="background:#febc2e"></span>
+        <span class="terminal-dot" style="background:#28c840"></span>
+        <span class="terminal-title">animesh@portfolio  —  zsh</span>
+      </div>
+      <div class="terminal-body" id="terminalBody">
+        <div class="t-line"><span class="t-prompt">~</span> <span class="t-cmd">whoami</span></div>
+        <div class="t-out">animesh sinha · applied ai/ml engineer</div>
+        <div class="t-line"><span class="t-prompt">~</span> <span class="t-cmd">now()</span></div>
+        <div class="t-out" id="termNow">— building llama 3.1 8b · sft → dpo</div>
+        <div class="t-line"><span class="t-prompt">~</span> <span class="t-cmd">stack()</span></div>
+        <div class="t-out">python · pytorch · fastapi · next.js · claude code</div>
+        <div class="t-line"><span class="t-prompt">~</span> <span class="t-cmd">status()</span></div>
+        <div class="t-out">
+          <span class="t-dot t-dot-on"></span> open to senior ai/ml roles<br/>
+          bengaluru · <span id="termClock">--:-- IST</span>
+        </div>
+        <div class="t-line"><span class="t-prompt">~</span> <span class="t-typed" id="termTyped"></span><span class="t-cursor">▍</span></div>
+      </div>
+    </aside>
   </div>
 </header>
+
+<!-- STATS -->
+<section class="stats-strip" aria-label="Quick stats">
+  <div class="container">
+    <div class="stats-row reveal">
+      <div class="stat">
+        <div class="stat-num" data-count="20" data-suffix="mo">0</div>
+        <div class="stat-label">shipping in production</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-count="6" data-suffix="">0</div>
+        <div class="stat-label">selected projects</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">IITB</div>
+        <div class="stat-label">grad coursework · cpi 8.72</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-count="99.56" data-suffix="%ile">0</div>
+        <div class="stat-label">gate cse · ~100k candidates</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- WORK / TIMELINE -->
 <section id="work">
