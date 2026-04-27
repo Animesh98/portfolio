@@ -523,12 +523,33 @@ footer .container {
 /* ---------- Responsive ---------- */
 @media (max-width: 760px) {
   nav .container { padding: 14px 20px; }
-  .nav-links { gap: 18px; }
-  .nav-links a:not(.nav-cta) { display: none; }
+  .nav-links { gap: 14px; }
+  .nav-links a { font-size: 13px; padding: 6px 4px; }
+  .nav-links a:not(.nav-cta) { color: var(--text); }
   .container { padding: 0 20px; }
   .hero { padding: 80px 0 50px; }
   section { padding: 64px 0; }
   .about-grid { grid-template-columns: 1fr; gap: 40px; }
   h2 { margin-bottom: 32px; }
   footer .container { flex-direction: column; text-align: center; }
+}
+
+/* Very narrow screens: collapse anchor links, keep Resume CTA */
+@media (max-width: 420px) {
+  .nav-links a:not(.nav-cta) { display: none; }
+}
+
+/* Typography polish */
+h1, h2, h3 { text-wrap: balance; }
+.hero-sub, .prose p { text-wrap: pretty; }
+
+/* Respect users who opted out of motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; }
 }
