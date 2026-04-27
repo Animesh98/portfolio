@@ -50,17 +50,43 @@ if (glow && hero && !reduced && window.matchMedia('(pointer: fine)').matches) {
   });
 }
 
-// --- Terminal: live BLR clock ----------------------------------------------
-const clockEl = document.getElementById('termClock');
-if (clockEl) {
+// --- Live BLR clock (terminal + footer) -------------------------------------
+const clockEls = [document.getElementById('termClock'), document.getElementById('footClock')].filter(Boolean);
+if (clockEls.length) {
   const tick = () => {
     const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
     const hh = String(now.getHours()).padStart(2, '0');
     const mm = String(now.getMinutes()).padStart(2, '0');
-    clockEl.textContent = `${hh}:${mm} IST`;
+    const text = `${hh}:${mm} IST`;
+    clockEls.forEach(el => el.textContent = text);
   };
   tick();
   setInterval(tick, 30 * 1000);
+}
+
+// --- Footer: last commit from GitHub API ------------------------------------
+const commitEl = document.getElementById('footCommit');
+if (commitEl) {
+  const fmt = (iso) => {
+    const d = new Date(iso);
+    const diff = (Date.now() - d.getTime()) / 1000;
+    if (diff < 60)        return 'just now';
+    if (diff < 3600)      return `${Math.floor(diff/60)}m ago`;
+    if (diff < 86400)     return `${Math.floor(diff/3600)}h ago`;
+    if (diff < 86400*30)  return `${Math.floor(diff/86400)}d ago`;
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  };
+  fetch('https://api.github.com/repos/Animesh98/portfolio/commits?per_page=1', {
+    headers: { Accept: 'application/vnd.github+json' }
+  })
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(data => {
+      const c = data?.[0];
+      if (!c) throw new Error();
+      const when = fmt(c.commit.author.date);
+      commitEl.innerHTML = `last shipped <a href="https://github.com/Animesh98/portfolio/commit/${c.sha}" target="_blank" rel="noopener">${when}</a>`;
+    })
+    .catch(() => { commitEl.textContent = ''; });
 }
 
 // --- Terminal: typing prompt rotation ---------------------------------------
