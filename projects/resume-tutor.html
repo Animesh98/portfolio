@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0b" />
+<title>Resume Tutor — Voice drilling on your own CV · Animesh Sinha</title>
+<meta name="description" content="A homelab interview-prep tool that voice-drills you on your own CV claims, runs LLM-graded labs, and sends a daily Gmail digest of what you're due to review." />
+<meta name="author" content="Animesh Sinha" />
+<link rel="canonical" href="https://animesh98.github.io/portfolio/projects/resume-tutor.html" />
+<meta property="og:title" content="Resume Tutor — Voice drilling on your own CV" />
+<meta property="og:description" content="FastAPI + HTMX. faster-whisper local transcription, OpenAI tiered pipelines, in-app labs with LLM grader, SM-2 spaced rep, daily 8 AM IST Gmail digest." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://animesh98.github.io/portfolio/projects/resume-tutor.html" />
+<meta property="og:image" content="https://animesh98.github.io/portfolio/assets/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='32' fill='%237dd3c0'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;450;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a class="brand" href="../index.html"><span class="brand-dot"></span>Animesh</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a class="nav-cta" href="../assets/animesh-sinha-resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="project-page" data-slug="resume-tutor">
+  <div class="container">
+    <a class="back-link" href="../index.html#projects">← All projects</a>
+
+    <header class="project-header project-header-v2">
+      <div class="ph-meta">
+        <span class="badge badge-personal">Personal</span>
+        <span class="ph-divider">·</span>
+        <span>Live on homelab</span>
+        <span class="ph-divider">·</span>
+        <span>2026</span>
+        <span class="ph-divider">·</span>
+        <span class="ph-readtime"><span id="readTime">…</span> min read</span>
+      </div>
+      <h1>Resume Tutor — voice drilling on your own CV</h1>
+      <p class="lede">Every interview I've ever had got harder when the interviewer asked the second question. Not "what did you build" — "tell me again, from a different angle, why <em>that</em> choice?" I built a homelab tool that asks me those questions on a loop, in voice, against my own CV, and tracks which claims I keep tripping over.</p>
+      <div class="stack-pills">
+        <span class="tag">FastAPI</span>
+        <span class="tag">HTMX</span>
+        <span class="tag">Jinja2</span>
+        <span class="tag">faster-whisper</span>
+        <span class="tag">OpenAI gpt-5.4 tiered</span>
+        <span class="tag">Polars</span>
+        <span class="tag">Pydantic v2</span>
+        <span class="tag">SM-2</span>
+      </div>
+    </header>
+
+    <article class="prose">
+      <h2>The shape of the problem</h2>
+      <p>A resume is a list of claims. "Built a RAG pipeline." "Cut grading time by ~80%." "Real-time agentic CRM." Each claim needs to survive five minutes of cross-examination from someone who has actually built one of those things. The failure mode isn't that I forget what I did — it's that I remember the headline and lose the texture.</p>
+      <p>So the unit of work isn't the resume; it's the <strong>claim</strong>. Each claim points to one or more underlying <strong>concepts</strong> (FAISS, RAG eval, WebRTC signalling, etc.), and each concept gets drilled, reviewed, and reinforced on its own schedule.</p>
+
+      <h2>What I built</h2>
+      <ul>
+        <li><strong>Voice drill loop.</strong> Pick a claim → app asks an opening question → I answer in voice → <code>faster-whisper</code> transcribes locally → an OpenAI mid-tier evaluator scores the answer per-question, surfaces misconceptions, and queues a sharper follow-up. Transcripts and reviews are written per session as plain Markdown + JSON on disk.</li>
+        <li><strong>Tiered LLM substrate.</strong> Three OpenAI tiers behind a single <code>TieredLLM</code> facade — flagship (<code>gpt-5.4</code>) for synthesis and lab notebooks, mid (<code>gpt-5.4-mini</code>) for the questioner / evaluator / lab grader, nano (<code>gpt-5.4-nano</code>) for review verdicts and JD scoring. End-to-end cost is ~$0.04–0.09 per drill, capped at $1/day by a <code>BudgetTracker</code> that raises before the next call.</li>
+        <li><strong>In-app interactive labs.</strong> Concepts come with executable lessons stored as Marimo <code>.py</code> files but rendered inside the app — lesson markdown, setup, exercise prose, hidden solution. <code>POST /lab/&lt;slug&gt;/grade</code> calls the lab grader (~$0.001) and returns a verdict + feedback as an HTMX partial. Same grader does retrieval checks on plain concept cards.</li>
+        <li><strong>SM-2 spaced repetition.</strong> Verdicts (<em>wrong / partial / right</em>) feed an SM-2 implementation with bounded ease (1.3–3.0) and bounded interval (1–90 days). Schedule is recomputed lazily on the home page; no live event hooks, no background queue, no drift.</li>
+        <li><strong>Daily 8 AM IST Gmail digest.</strong> Idempotent multipart HTML+text email — what's due today, sparkline of last 14 days, open misconceptions, prereq warnings. Sent via Gmail SMTP from a cron line, suppressed when there's nothing to say.</li>
+        <li><strong>Career-ops integration.</strong> The drill page lists JDs from my <code>career-ops</code> tracker. <code>list_jds(auto_refresh=True)</code> stat-checks <code>applications.md</code>'s mtime; if it's newer than the last pull, the JDs auto-rebuild on the next page load. No webhooks, no message bus — just a file timestamp and a function call.</li>
+      </ul>
+
+      <h2>Architecture highlights</h2>
+      <div class="highlight-grid">
+        <div class="highlight"><div class="highlight-num">$0.04–$0.09</div><div class="highlight-label">end-to-end cost per drill</div></div>
+        <div class="highlight"><div class="highlight-num">3 tiers</div><div class="highlight-label">flagship / mid / nano OpenAI routing</div></div>
+        <div class="highlight"><div class="highlight-num">SM-2</div><div class="highlight-label">bounded ease + interval, replayed from disk</div></div>
+        <div class="highlight"><div class="highlight-num">273</div><div class="highlight-label">tests · ruff + pyright strict clean</div></div>
+      </div>
+
+      <h2>What I learned</h2>
+      <p>Three things this project taught me that I wouldn't have learned by reading about spaced repetition:</p>
+      <ul>
+        <li><strong>The model isn't the bottleneck — the prompt is.</strong> The pedagogy bar lives in <code>prompts/notebook_generate.md</code> and <code>prompts/concept_explain.md</code>, not in template code. When a generated lab feels weak, the fix is almost always tightening one of those files; rarely the rendering layer.</li>
+        <li><strong>Idempotency is what makes home-grown tools survive.</strong> The digest is idempotent (one row in <code>digests.jsonl</code> per day per recipient). The SR sync is idempotent (replays only sessions not in <code>last_synced_session_ids</code>). The JD pull is idempotent (mtime-gated). I can reboot the box, lose state, run the same command twice — nothing breaks.</li>
+        <li><strong>One "easy" feature paid for the rest.</strong> Wiring the daily digest took half a Saturday. It's the single feature that keeps me coming back, because it ships review work to me instead of asking me to remember to log in.</li>
+      </ul>
+
+      <blockquote>This is a single-user, single-server tool with no users to delight, no roadmap, no tickets. It exists because it makes my interviews go better. It's the kind of project I think every applied engineer should keep around — a thing that's small enough to never break, useful enough that it doesn't.</blockquote>
+
+      <h2>Stack</h2>
+      <p><code>FastAPI</code> · <code>HTMX</code> · <code>Jinja2</code> · <code>Polars</code> · <code>Pydantic v2</code> · <code>Typer</code> · <code>structlog</code> · <code>faster-whisper</code> · <code>OpenAI Python SDK</code> · <code>Gmail SMTP</code> · cron · systemd · Tailscale</p>
+    </article>
+
+    <nav class="proj-nav" id="projNav" aria-label="Project navigation"></nav>
+  </div>
+</div>
+
+<footer>
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <div class="footer-brand"><span class="brand-dot"></span><span>Animesh Sinha</span></div>
+      <div class="footer-meta">
+        <span class="footer-status"><span class="t-dot t-dot-on"></span>Available · senior AI/ML roles</span>
+        <span>Bengaluru, India · <span id="footClock">--:-- IST</span></span>
+      </div>
+    </div>
+    <div class="footer-col footer-links">
+      <a href="../index.html">← Back home</a>
+      <a href="https://github.com/Animesh98" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="mailto:animesh09021998@gmail.com">Email ↗</a>
+    </div>
+    <div class="footer-col footer-sig">
+      © 2026 · Built with <a href="https://claude.com/claude-code" target="_blank" rel="noopener">Claude Code</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>
