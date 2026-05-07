@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0a0b" />
+<title>Career-Ops + Offbeat Job Radar — End-to-end job search automation · Animesh Sinha</title>
+<meta name="description" content="A 5-stage job search pipeline I run on my homelab: Gmail alert ingest, 17-portal API scan, 9-check zero-token prefilter, Claude Haiku smart filter, Reddit + HN radar, auto-resume tailoring, dashboard." />
+<meta name="author" content="Animesh Sinha" />
+<link rel="canonical" href="https://animesh98.github.io/portfolio/projects/career-ops-radar.html" />
+<meta property="og:title" content="Career-Ops + Offbeat Job Radar — Job search automation pipeline" />
+<meta property="og:description" content="Gmail + 17 portal APIs + Reddit/HN radar + 9-check prefilter + Haiku smart filter + Chrome extension + auto-tailored resumes. Hourly systemd timers, Haiku ~$1–3/mo, Apify $0." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://animesh98.github.io/portfolio/projects/career-ops-radar.html" />
+<meta property="og:image" content="https://animesh98.github.io/portfolio/assets/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='32' fill='%237dd3c0'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;450;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a class="brand" href="../index.html"><span class="brand-dot"></span>Animesh</a>
+    <div class="nav-links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#about">About</a>
+      <a class="nav-cta" href="../assets/animesh-sinha-resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="project-page" data-slug="career-ops-radar">
+  <div class="container">
+    <a class="back-link" href="../index.html#projects">← All projects</a>
+
+    <header class="project-header project-header-v2">
+      <div class="ph-meta">
+        <span class="badge badge-personal">Personal</span>
+        <span class="ph-divider">·</span>
+        <span>Always-on pipeline</span>
+        <span class="ph-divider">·</span>
+        <span>2026</span>
+        <span class="ph-divider">·</span>
+        <span class="ph-readtime"><span id="readTime">…</span> min read</span>
+      </div>
+      <h1>Career-Ops + Offbeat Job Radar — end-to-end job search automation</h1>
+      <p class="lede">Looking for the right next role at scale is a search problem with extreme precision-recall asymmetry: one good fit is worth 200 noisy ones, and the cost of reading each junk JD is your evening. I built a pipeline that ingests jobs from every place I'd otherwise check by hand — LinkedIn alerts in Gmail, company API endpoints, Reddit hiring threads, HN "who is hiring" — and only surfaces the rows that survive a real filter.</p>
+      <div class="stack-pills">
+        <span class="tag">Node.js</span>
+        <span class="tag">SQLite</span>
+        <span class="tag">Claude Haiku 4.5</span>
+        <span class="tag">systemd timers</span>
+        <span class="tag">Gmail SMTP</span>
+        <span class="tag">Chrome MV3</span>
+        <span class="tag">FastAPI dashboard</span>
+        <span class="tag">Tailscale</span>
+      </div>
+    </header>
+
+    <article class="prose">
+      <h2>Five-stage pipeline</h2>
+      <pre><code>Collect → Keyword Filter (9 checks) → Smart Filter (Haiku) → Evaluate → Apply</code></pre>
+      <ul>
+        <li><strong>Collect.</strong> Three independent fetchers — <code>scan.mjs</code> hits 17 careers-page APIs (Databricks, MongoDB, Snowflake, Anthropic, Perplexity, PhonePe, Groww, …) with India-only location filtering at scrape time; the <code>/fetch-gmail-alerts</code> skill ingests LinkedIn's daily alert emails via the Gmail MCP; the offbeat radar pulls Reddit (forhire / hiring / MachineLearning / LocalLLaMA, plus HN /jobs and "who is hiring") through a free <code>old.reddit.com</code> + redlib fallback backend that I wrote after Apify started costing real money.</li>
+        <li><strong>Keyword filter (9 zero-token checks).</strong> Company type (no services / consulting / staffing), experience gate (≤3 yrs), Python primary stack, India location, headcount &gt;10, BGV-risk employers, posting freshness, domain (AI/ML/GenAI/LLM, not QA/PM/sales), salary floor (≥₹18L if disclosed). 80% of the noise dies here for $0.</li>
+        <li><strong>Smart filter (Claude Haiku 4.5).</strong> Survivors get a structured score 1–5 on role fit, level match, and company quality. ~$0.0005 per call; ~$1–3/month at current cadence. The garbage-page detector skips JS-only LinkedIn renders gracefully so the budget never burns on a 404.</li>
+        <li><strong>Evaluate.</strong> When I paste a URL, the <code>/career-ops</code> Claude Code skill runs a full A–G evaluation (role match, comp band, legitimacy, risks, recommendation) and writes a numbered report under <code>reports/</code>.</li>
+        <li><strong>Apply.</strong> On APPLY / LEAN-APPLY verdicts, the system tailors my <code>.tex</code> resume against the JD and drops it in <code>output/resume_{slug}.tex</code> — I just open Overleaf and download the PDF.</li>
+      </ul>
+
+      <h2>Auxiliary surfaces</h2>
+      <ul>
+        <li><strong>Dashboard on :8001.</strong> FastAPI + vanilla JS. Five tabs: Overview (status flow + workflow guide), Pipeline (filterable table with status filters, Haiku score badges, color-coded row borders, action buttons), Applications (the canonical <code>applications.md</code> tracker), Scan History, Actions (one-click run-scan / smart-filter / fetch-gmail). Each row's status moves through <em>New → Filtered → Ready → Analyzed → Applied</em>, with manual Skip from any state.</li>
+        <li><strong>Chrome extension.</strong> A Manifest V3 extension I keep in Brave + Chrome on every machine. Right-click a JD anywhere → POST to <code>jackal:8001/api/extension/jd</code> → the worker triggers <code>/career-ops</code> evaluation and resume tailoring against the captured page. Tailscale-wide, systemd auto-start, token-authed, env in <code>~/.career-ops-extension.env</code>.</li>
+        <li><strong>Daily digests.</strong> Four Gmail digests a day at IST 09:30 / 13:30 / 17:30 / 21:30 — empty digests are suppressed. Idempotent via <code>digests.jsonl</code>.</li>
+        <li><strong>Cross-source dedup.</strong> Both scanner and Gmail parser dedup against <code>pipeline.md</code> + <code>scan-history.tsv</code> + <code>applications.md</code> on URL, LinkedIn job ID, and a <code>company::role</code> key — so the same job from a Greenhouse link and a LinkedIn alert collapse to one row.</li>
+      </ul>
+
+      <h2>Backend rewrite — Apify → free direct</h2>
+      <p>The first version paid Apify $3.40 per 1,000 scraped items. The seen-set didn't help me because Apify bills per <em>returned</em> item, not per <em>new</em> one. After May 6 the pipeline runs on a <code>fetchers/reddit-direct.mjs</code> backend that hits <code>old.reddit.com/.json</code> directly with a redlib mirror fallback and adaptive backoff via <code>recentFailureRate()</code>. The dispatcher reads a <code>REDDIT_BACKEND</code> env to swap implementations; Apify only runs on explicit opt-in. HN is a separate <code>hn-jobs.mjs</code> that reads the official Firebase API and HTML-strips the linked YC company pages for context. <strong>Apify line item: $0/mo. Haiku: $1–3/mo.</strong></p>
+
+      <h2>Architecture highlights</h2>
+      <div class="highlight-grid">
+        <div class="highlight"><div class="highlight-num">17</div><div class="highlight-label">careers-page APIs scanned, India-only filter</div></div>
+        <div class="highlight"><div class="highlight-num">9</div><div class="highlight-label">zero-token keyword checks before any LLM call</div></div>
+        <div class="highlight"><div class="highlight-num">~$1–3/mo</div><div class="highlight-label">Haiku spend across all sources</div></div>
+        <div class="highlight"><div class="highlight-num">100+ jobs</div><div class="highlight-label">tracked, evaluated, scored end-to-end</div></div>
+      </div>
+
+      <h2>What I learned</h2>
+      <ul>
+        <li><strong>Cheap filters before expensive ones, always.</strong> The 9-check keyword prefilter kills 80% of postings for $0 in CPU time. Letting Haiku see the survivors is what makes the monthly budget sit in the noise.</li>
+        <li><strong>Idempotent timers beat event buses.</strong> systemd timers + a SQLite seen-set is the entire scheduler. No queue, no broker, no DLQ. The fetcher can crash, retry, double-fire — the seen-set deduplicates outcome state without me writing any retry logic.</li>
+        <li><strong>Owning the integrations is the moat.</strong> Apify was a build-vs-buy decision that flipped the second the bill arrived. Writing <code>reddit-direct.mjs</code> took an evening; it's been free and stable since.</li>
+        <li><strong>Auto-tailor on LEAN-APPLY, not on APPLY.</strong> A separate behavior I learned from running this against my own pipeline: the cost of writing a tailored <code>.tex</code> upfront for borderline roles is tiny, and the friction of doing it later is what kills the actual application. Cheap to optimize the wrong direction; expensive to optimize the right one.</li>
+      </ul>
+
+      <blockquote>This pipeline is for me, on my homelab, scoring my own job options. But the architecture — fan-in collectors, cheap-then-expensive filters, idempotent timers, structured-scoring with a small model, escalation to a bigger one only on survivors — is exactly the shape of a production AI-ops system. I just got to use my own job hunt as the dataset.</blockquote>
+
+      <h2>Stack</h2>
+      <p><code>Node.js</code> · <code>Claude Haiku 4.5</code> · <code>SQLite</code> · <code>FastAPI</code> · <code>Python</code> · <code>systemd timers</code> · <code>Gmail MCP</code> · <code>Gmail SMTP</code> · <code>Chrome MV3 (Manifest V3)</code> · <code>Tailscale</code> · <code>LaTeX (Overleaf)</code></p>
+    </article>
+
+    <nav class="proj-nav" id="projNav" aria-label="Project navigation"></nav>
+  </div>
+</div>
+
+<footer>
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <div class="footer-brand"><span class="brand-dot"></span><span>Animesh Sinha</span></div>
+      <div class="footer-meta">
+        <span class="footer-status"><span class="t-dot t-dot-on"></span>Available · senior AI/ML roles</span>
+        <span>Bengaluru, India · <span id="footClock">--:-- IST</span></span>
+      </div>
+    </div>
+    <div class="footer-col footer-links">
+      <a href="../index.html">← Back home</a>
+      <a href="https://github.com/Animesh98/offbeat-radar" target="_blank" rel="noopener">offbeat-radar (open source) ↗</a>
+      <a href="mailto:animesh09021998@gmail.com">Email ↗</a>
+    </div>
+    <div class="footer-col footer-sig">
+      © 2026 · Built with <a href="https://claude.com/claude-code" target="_blank" rel="noopener">Claude Code</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

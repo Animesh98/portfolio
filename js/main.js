@@ -144,6 +144,8 @@ const PROJECT_ORDER = [
   { slug: 'reelforge',         title: 'Reelforge — Multi-model Video' },
   { slug: 'llama-qlora',       title: 'Llama 3.1 8B — SFT → DPO' },
   { slug: 'jarvis-dashboard',  title: 'Jarvis Dashboard' },
+  { slug: 'resume-tutor',      title: 'Resume Tutor' },
+  { slug: 'career-ops-radar',  title: 'Career-Ops + Offbeat Job Radar' },
   { slug: 'career-prep',       title: 'Career Prep Platform' },
   { slug: 'wedding-picks',     title: 'Wedding Picks' },
   { slug: 'neural-rendering-ar', title: 'Neural Rendering for AR' },
