@@ -316,6 +316,14 @@ h1 em {
   max-width: 640px;
   line-height: 1.6;
   margin: 0 0 40px;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+/* On narrow phones, short lines justified produce ugly word-spacing rivers — revert to left-align. */
+@media (max-width: 520px) {
+  .hero-sub { text-align: left; hyphens: manual; -webkit-hyphens: manual; }
 }
 .hero-sub strong { color: var(--text); font-weight: 550; }
 .hero-cta {
