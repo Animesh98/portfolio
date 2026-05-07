@@ -311,14 +311,13 @@ h1 em {
   color: var(--accent);
 }
 .hero-sub {
-  font-size: clamp(17px, 1.8vw, 20px);
+  font-size: clamp(14.5px, 1.45vw, 16.5px);
   color: var(--text-dim);
-  max-width: 640px;
-  line-height: 1.6;
-  margin: 0 0 14px;
-  text-wrap: balance;
+  max-width: 600px;
+  line-height: 1.65;
+  margin: 0 0 40px;
+  text-wrap: pretty;
 }
-.hero-sub:last-of-type { margin-bottom: 40px; }
 .hero-sub strong { color: var(--text); font-weight: 550; }
 .hero-cta {
   display: flex;
